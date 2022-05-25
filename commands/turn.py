@@ -12,7 +12,7 @@ class turn(commands2.PIDCommand):
         #drivetrain.gyro.setYaw(0)
         super().__init__(
             PIDController(turn_K_p, turn_K_I,
-                          turn_K_p),
+                          turn_K_D),
 
             #drivetrain.m_left_encoder.getPosition,
             drivetrain.gyro.getYaw,
@@ -22,10 +22,14 @@ class turn(commands2.PIDCommand):
             [drivetrain])
         self.getController().setTolerance(10)
         self.drivetrain = drivetrain
+    
+    def initialize(self) -> None:
+        self.drivetrain.gyro.setYaw(0)
+
     def isFinished(self):
-        print("Heelo Wooorld")
-        print(self.drivetrain.gyro.getYaw())
-        if(self.getController().atSetpoint()):
-            print("Hi. This Turn is finished.")
-        return self.getController().atSetpoint();
+        print(self.drivetrain.gyro.getYaw(), self.getController().getSetpoint())
+        return self.getController().getPositionError() < 3
+    
+    def end(self, interrupted: bool) -> None:
+        print("Turn done.")
         

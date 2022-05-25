@@ -5,6 +5,7 @@ from commands.turn import turn
 import wpilib
 import math
 from commands.defaultDrive import DefaultDrive
+from commands.auto_sequence import AutoSequence
 
 
 class RobotContainer:
@@ -29,6 +30,7 @@ class RobotContainer:
         )
 
         self.turn = turn(180, self.robotDrive)
+        self.auto_sequence = AutoSequence(self.robotDrive)
 
         # A complex auto routine that drives forward, drops a hatch, and then drives backward.
         # self.complexAuto = ComplexAuto(self.drive, self.hatch)
@@ -38,7 +40,8 @@ class RobotContainer:
 
         # Add commands to the autonomous command chooser
         #self.chooser.setDefaultOption("Simple Auto", self.simpleAuto)
-        self.chooser.setDefaultOption("turn", self.turn)
+        self.chooser.addOption("turn", self.turn)
+        self.chooser.setDefaultOption("auto sequence", self.auto_sequence)
         # self.chooser.addOption("Complex Auto", self.complexAuto)
 
         # Put the chooser on the dashboard
